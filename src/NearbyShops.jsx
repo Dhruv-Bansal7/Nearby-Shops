@@ -5,9 +5,10 @@ const NearbyShops = () => {
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [radius, setRadius] = useState(1000);
 
-  const fetchNearbyShops = async (lat, lon) => {
-    const radius = 1000; // radius in meters
+  const fetchNearbyShops = async (lat, lon , radius) => {
+    
     const query = `
       [out:json];
       node["shop"](around:${radius},${lat},${lon});
@@ -44,14 +45,30 @@ const NearbyShops = () => {
 
   useEffect(() => {
     if (location) {
-      fetchNearbyShops(location.lat, location.lon);
+      fetchNearbyShops(location.lat, location.lon , radius);
     }
-  }, [location]);
+  }, [location , radius]);
+
+  const handleRadiusChange = (e) => {
+    setRadius(Number(e.target.value));
+  };
 
   return (
     <div>
       <h1>Nearby Shops</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <label>
+        Enter radius (in meters):&nbsp;
+        <input
+          type="number"
+          value={radius}
+          onChange={handleRadiusChange}
+          min="100"
+          max="5000"
+          step="100"
+          style={{ margin: '10px', padding: '5px' }}
+        />
+      </label>
       {loading && <p>Loading shops...</p>}
       {!loading && !error && shops.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
