@@ -71,7 +71,7 @@ const NearbyShops = () => {
       </label>
       {loading && <p>Loading shops...</p>}
       {!loading && !error && shops.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent : 'center' }}>
           {shops.map((shop) => (
             <div
               key={shop.id}
